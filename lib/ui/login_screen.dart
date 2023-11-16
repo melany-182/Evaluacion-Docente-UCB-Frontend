@@ -149,7 +149,7 @@ class HeroWidget extends StatelessWidget {
             ),
             IconButton(
               onPressed: () {
-                // TODO: acción del botón de ayuda
+                // TODO: implementar acción del botón de ayuda
               },
               icon: const Icon(Icons.help, color: Colors.black),
             ),

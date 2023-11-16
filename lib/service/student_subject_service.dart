@@ -11,7 +11,7 @@ class StudentSubjectService {
   static Future<List<StudentSubjectDto>> getSubjects() async {
     List<StudentSubjectDto> result;
     var uri = Uri.parse(
-        '$backendUrlBase/api/v1/users/subjects/teachers/1'); // FIXME: hacer la prueba
+        '$backendUrlBase/api/v1/users/subjects/teachers/1'); // FIXME: quitar id del endpoint al integrar la autenticación
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
@@ -20,16 +20,15 @@ class StudentSubjectService {
     if (response.statusCode == 200) {
       var responseDto = ResponseDto.fromJson(jsonDecode(response.body));
       debugPrint('backend response (GET SUBJECTS): ${responseDto.toJson()}');
-      //if (responseDto.code.toString() == '200') {
-        // *** FIXME: REVISAR ESTA PARTE
+      if (responseDto.code.toString() == '200') {
         result = (responseDto.response as List)
             .map((e) => StudentSubjectDto.fromJson(e))
             .toList();
         debugPrint('result: $result'); // aquí imprime el resultado
-      //} else {
+      } else {
         debugPrint('vino por aquí');
-        //throw Exception(responseDto.errorMessage);
-      //}
+        throw Exception(responseDto.errorMessage);
+      }
     } else {
       throw Exception('Error al intentar obtener los datos de las materias.');
     }
