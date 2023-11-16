@@ -20,16 +20,16 @@ class StudentSubjectService {
     if (response.statusCode == 200) {
       var responseDto = ResponseDto.fromJson(jsonDecode(response.body));
       debugPrint('backend response (GET SUBJECTS): ${responseDto.toJson()}');
-      if (responseDto.code.toString() == '200') {
+      //if (responseDto.code.toString() == '200') {
         // *** FIXME: REVISAR ESTA PARTE
         result = (responseDto.response as List)
             .map((e) => StudentSubjectDto.fromJson(e))
             .toList();
         debugPrint('result: $result'); // aquí imprime el resultado
-      } else {
+      //} else {
         debugPrint('vino por aquí');
-        throw Exception(responseDto.errorMessage);
-      }
+        //throw Exception(responseDto.errorMessage);
+      //}
     } else {
       throw Exception('Error al intentar obtener los datos de las materias.');
     }
