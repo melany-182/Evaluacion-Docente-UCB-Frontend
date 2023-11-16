@@ -1,1 +1,1 @@
-String urlBackend = 'http://172.19.19.172:9999'; // variable parametrizada
+String urlBackend = 'http://172.18.11.28:9999'; // variable parametrizada
