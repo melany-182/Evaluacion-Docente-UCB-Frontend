@@ -1,0 +1,4 @@
+const String loginUrl =
+    'https://dev-ad7v2uf4uap0l2oe.us.auth0.com/u/login?state=hKFo2SBnRDQxTENEcEpNVzB6SEJSOFk3WHFTUHBzVFVidUN6VaFur3VuaXZlcnNhbC1sb2dpbqN0aWTZIFVNWWtUN0tqV2RGekR2X2Z0ZTB3QzF1MjYxaUkyM01No2NpZNkgZWg5OGJzbE1WblBqbmRJYTI2ZnBOQVZ1dE1aeG9YQVo';
+const String movilUrl =
+    'https://dev-ad7v2uf4uap0l2oe.us.auth0.com/u/login?state=hKFo2SBlWmg4OTZfSExPUFA4RjFkalQ1cFVOUHFjbnpwMlQ2eaFur3VuaXZlcnNhbC1sb2dpbqN0aWTZIC1tWkdrQU0xUFNPU0RVQTZzZG1yOFd0V1E0SFlvOGwyo2NpZNkgZWg5OGJzbE1WblBqbmRJYTI2ZnBOQVZ1dE1aeG9YQVo';
