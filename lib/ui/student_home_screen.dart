@@ -67,54 +67,61 @@ class StudentHomeScreen extends StatelessWidget {
                               fontSize: 18.0, fontWeight: FontWeight.bold),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-                        child: DataTable(
-                          columns: const [
-                            DataColumn(
-                                label: Expanded(
-                              child: Center(
-                                child: Text('Docente',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold)),
-                              ),
-                            )),
-                            DataColumn(
-                                label: Expanded(
-                              child: Center(
-                                child: Text('Materia',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold)),
-                              ),
-                            )),
-                            DataColumn(
-                                label: Expanded(
-                              child: Center(
-                                child: Text('Paralelo',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold)),
-                              ),
-                            )),
-                          ],
-                          rows: List<DataRow>.generate(
-                            state.data.length,
-                            (index) => DataRow(
-                              cells: [
-                                DataCell(Center(
-                                  child: Text(
-                                    '${state.data[index].teacherFirstName} ${state.data[index].teacherLastName}',
-                                    style: const TextStyle(
-                                        color: Colors.blueAccent,
-                                        decoration: TextDecoration.underline),
+                      Center(
+                        child: Padding(
+                          padding:
+                              const EdgeInsets.only(left: 16.0, right: 16.0),
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: DataTable(
+                              columns: const [
+                                DataColumn(
+                                    label: Expanded(
+                                  child: Center(
+                                    child: Text('Docente',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
                                   ),
                                 )),
-                                DataCell(Center(
-                                    child:
-                                        Text(state.data[index].subjectName))),
-                                DataCell(Center(
-                                    child: Text(state.data[index].parallel
-                                        .toString()))),
+                                DataColumn(
+                                    label: Expanded(
+                                  child: Center(
+                                    child: Text('Materia',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                  ),
+                                )),
+                                DataColumn(
+                                    label: Expanded(
+                                  child: Center(
+                                    child: Text('Paralelo',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                  ),
+                                )),
                               ],
+                              rows: List<DataRow>.generate(
+                                state.data.length,
+                                (index) => DataRow(
+                                  cells: [
+                                    DataCell(Center(
+                                      child: Text(
+                                        '${state.data[index].teacherFirstName} ${state.data[index].teacherLastName}',
+                                        style: const TextStyle(
+                                            color: Colors.blueAccent,
+                                            decoration:
+                                                TextDecoration.underline),
+                                      ),
+                                    )),
+                                    DataCell(Center(
+                                        child: Text(
+                                            state.data[index].subjectName))),
+                                    DataCell(Center(
+                                        child: Text(state.data[index].parallel
+                                            .toString()))),
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
                         ),
