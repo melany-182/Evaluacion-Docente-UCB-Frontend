@@ -1,17 +1,17 @@
 class StudentSubjectDto {
-  int userSubjectId;
+  int enrollmentId;
   int teacherUserId;
   String teacherFirstName;
   String teacherLastName;
   int subjectId;
   String subjectName;
   String semester;
-  int year;
-  int parallel;
+  String year; // FIXME: cambiar a int
+  String parallel; // FIXME: cambiar a int
   bool evaluated;
 
   StudentSubjectDto(
-      {required this.userSubjectId,
+      {required this.enrollmentId,
       required this.teacherUserId,
       required this.teacherFirstName,
       required this.teacherLastName,
@@ -24,7 +24,7 @@ class StudentSubjectDto {
 
   factory StudentSubjectDto.fromJson(Map<String, dynamic> json) {
     return StudentSubjectDto(
-        userSubjectId: json['userSubjectId'],
+        enrollmentId: json['enrollmentId'],
         teacherUserId: json['teacherUserId'],
         teacherFirstName: json['teacherFirstName'],
         teacherLastName: json['teacherLastName'],
@@ -37,7 +37,7 @@ class StudentSubjectDto {
   }
 
   Map<String, dynamic> toJson() => {
-        'userSubjectId': userSubjectId,
+        'enrollmentId': enrollmentId,
         'teacherUserId': teacherUserId,
         'teacherFirstName': teacherFirstName,
         'teacherLastName': teacherLastName,

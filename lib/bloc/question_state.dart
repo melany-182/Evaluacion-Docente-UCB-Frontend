@@ -1,31 +1,30 @@
-import 'package:evaluacion_docente_frontend/dto/student_subject_dto.dart';
+import 'package:evaluacion_docente_frontend/bloc/student_state.dart';
+import 'package:evaluacion_docente_frontend/dto/question_dto.dart';
 
-enum PageStatus { initial, loading, success, failure }
-
-class StudentSubjectState {
+class QuestionState {
   final PageStatus status; // inicial, cargando, éxito, falla
-  final List<StudentSubjectDto> data;
+  final List<QuestionDto> data;
   final String? errorMessage;
 
-  StudentSubjectState({
+  QuestionState({
     required this.status,
     required this.data,
     this.errorMessage,
   });
 
-  factory StudentSubjectState.initial() {
-    return StudentSubjectState(
+  factory QuestionState.initial() {
+    return QuestionState(
       status: PageStatus.initial,
       data: [],
     );
   }
 
-  StudentSubjectState copyWith({
+  QuestionState copyWith({
     PageStatus? status,
-    List<StudentSubjectDto>? data,
+    List<QuestionDto>? data,
     String? errorMessage,
   }) {
-    return StudentSubjectState(
+    return QuestionState(
       status: status ?? this.status,
       data: data ?? this.data,
       errorMessage: errorMessage ?? this.errorMessage,

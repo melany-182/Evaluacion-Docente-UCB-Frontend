@@ -1,81 +1,21 @@
 import 'package:auth0_flutter/auth0_flutter.dart';
-import 'package:auth0_flutter/auth0_flutter_web.dart';
-import 'package:flutter/foundation.dart';
+import 'package:evaluacion_docente_frontend/bloc/user_cubit.dart';
+import 'package:evaluacion_docente_frontend/bloc/user_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends StatelessWidget {
   final Auth0? auth0;
+
   const LoginScreen({this.auth0, final Key? key}) : super(key: key);
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
-  InAppWebViewController? webViewController;
-  UserProfile? _user;
-
-  late Auth0 auth0;
-  late Auth0Web auth0Web;
-
-  @override
-  void initState() {
-    super.initState();
-    auth0 = widget.auth0 ??
-        Auth0(dotenv.env['AUTH0_DOMAIN']!, dotenv.env['AUTH0_CLIENT_ID']!);
-    auth0Web =
-        Auth0Web(dotenv.env['AUTH0_DOMAIN']!, dotenv.env['AUTH0_CLIENT_ID']!);
-
-    if (kIsWeb) {
-      auth0Web.onLoad().then((final credentials) => setState(() {
-            _user = credentials?.user;
-          }));
-    }
-  }
-
-  Future<void> login() async {
-    try {
-      if (kIsWeb) {
-        return auth0Web.loginWithRedirect(redirectUrl: 'http://localhost:3000');
-      }
-
-      var credentials = await auth0
-          .webAuthentication(scheme: dotenv.env['AUTH0_CUSTOM_SCHEME'])
-          .login();
-
-      setState(() {
-        _user = credentials.user;
-      });
-
-      // if (credentials.idToken != null) {
-      //   print('ID Token: ${credentials.idToken}');
-      // }
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  Future<void> logout() async {
-    try {
-      if (kIsWeb) {
-        await auth0Web.logout(returnToUrl: 'http://localhost:3000');
-      } else {
-        await auth0
-            .webAuthentication(scheme: dotenv.env['AUTH0_CUSTOM_SCHEME'])
-            .logout();
-        setState(() {
-          _user = null;
-        });
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  @override
   Widget build(final BuildContext context) {
+    final auth0Instance = auth0 ??
+        Auth0(dotenv.env['AUTH0_DOMAIN']!, dotenv.env['AUTH0_CLIENT_ID']!);
+    final scheme = dotenv.env['AUTH0_CUSTOM_SCHEME']!;
+
     return MaterialApp(
       home: Scaffold(
           body: Padding(
@@ -85,32 +25,44 @@ class _LoginScreenState extends State<LoginScreen> {
           left: 40.0 / 2,
           right: 40.0 / 2,
         ),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-          Expanded(
-              child: Row(children: [
-            _user != null
-                ? Expanded(child: UserWidget(user: _user))
-                : const Expanded(child: HeroWidget())
-          ])),
-          _user != null
-              ? ElevatedButton(
-                  onPressed: logout,
-                  style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.black),
-                  ),
-                  child: const Text('Logout'),
-                )
-              : ElevatedButton.icon(
-                  onPressed: login,
-                  icon: const Icon(Icons.emoji_emotions, color: Colors.white),
-                  label: const Text('Login'),
-                  style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.black),
-                  ),
-                ),
-        ]),
+        child: BlocConsumer<UserCubit, UserState>(
+          listener: (context, state) {
+            // TODO: implementar listener
+          },
+          builder: (context, state) {
+            return Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                      child: state.user != null
+                          ? UserWidget(user: state.user)
+                          : const HeroWidget()),
+                  state.user != null
+                      ? ElevatedButton(
+                          onPressed: () => context
+                              .read<UserCubit>()
+                              .logout(auth0Instance, scheme),
+                          style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all<Color>(Colors.black),
+                          ),
+                          child: const Text('Logout'),
+                        )
+                      : ElevatedButton.icon(
+                          onPressed: (() => context
+                              .read<UserCubit>()
+                              .login(auth0Instance, scheme)),
+                          icon: const Icon(Icons.emoji_emotions,
+                              color: Colors.white),
+                          label: const Text('Login'),
+                          style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all<Color>(Colors.black),
+                          ),
+                        ),
+                ]);
+          },
+        ),
       )),
     );
   }
@@ -149,21 +101,22 @@ class HeroWidget extends StatelessWidget {
             ),
             IconButton(
               onPressed: () {
-                // TODO: implementar acción del botón de ayuda
+                // TODO: implementar acción del botón de info
               },
-              icon: const Icon(Icons.help, color: Colors.black),
+              icon: const Icon(Icons.info, color: Colors.black),
             ),
           ],
         ),
-        // Container(
-        //   margin: const EdgeInsets.only(bottom: margin),
-        //   child: Image.asset('assets/images/logo.png', width: 24),
-        // )
+        Container(
+          margin: const EdgeInsets.only(bottom: 24),
+          child: Image.asset('assets/images/logo.png', width: 24),
+        )
       ],
     );
   }
 }
 
+//
 class UserWidget extends StatelessWidget {
   final UserProfile? user;
 
