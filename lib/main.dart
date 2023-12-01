@@ -2,6 +2,7 @@ import 'package:evaluacion_docente_frontend/bloc/evaluation_detail_cubit.dart';
 import 'package:evaluacion_docente_frontend/bloc/question_cubit.dart';
 import 'package:evaluacion_docente_frontend/bloc/student_cubit.dart';
 import 'package:evaluacion_docente_frontend/bloc/teacher_cubit.dart';
+import 'package:evaluacion_docente_frontend/bloc/teacher_query_cubit.dart';
 import 'package:evaluacion_docente_frontend/bloc/user_cubit.dart';
 import 'package:evaluacion_docente_frontend/secure_storage.dart';
 import 'package:evaluacion_docente_frontend/ui/login_screen.dart';
@@ -33,6 +34,8 @@ class MyApp extends StatelessWidget {
         BlocProvider<TeacherCubit>(create: (context) => TeacherCubit()),
         BlocProvider<EvaluationDetailCubit>(
             create: (context) => EvaluationDetailCubit()),
+        BlocProvider<TeacherQueryCubit>(
+            create: (context) => TeacherQueryCubit()),
       ],
       child: MaterialApp(
         title: 'Evaluación Docente UCB',
@@ -48,7 +51,7 @@ class MyApp extends StatelessWidget {
               StudentEvaluationScreen(subjectEvaluationId: 0),
           '/teacher-home': (context) => const TeacherHomeScreen(),
           '/teacher-evaluation-detail': (context) =>
-              const TeacherEvaluationDetailScreen(
+              TeacherEvaluationDetailScreen(
                   evaluationPercentage: '0',
                   subjectName: 'Nombre de la materia',
                   parallel: '0',

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:evaluacion_docente_frontend/dto/evaluation_detail_dto.dart';
 import 'package:evaluacion_docente_frontend/dto/response_dto.dart';
+import 'package:evaluacion_docente_frontend/dto/teacher_query_dto.dart';
 import 'package:evaluacion_docente_frontend/dto/teacher_subject_dto.dart';
 import 'package:evaluacion_docente_frontend/service/ip/ip.dart' as ip;
 import 'package:flutter/material.dart';
@@ -85,6 +86,59 @@ class TeacherService {
     } else {
       throw Exception(
           'Error al intentar obtener los detalles de la evaluación de la materia.');
+    }
+    return result;
+  }
+
+  static Future<String> makeQuery(int teacherSubjectId, String prompt) async {
+    var uri =
+        Uri.parse('$backendUrlBase/api/v1/subjects/$teacherSubjectId/queries');
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    };
+    var body = jsonEncode({'prompt': prompt});
+    var response = await http.post(uri, headers: headers, body: body);
+
+    if (response.statusCode == 200) {
+      var responseDto = ResponseDto.fromJson(jsonDecode(response.body));
+      debugPrint('backend response (MAKE QUERY): ${responseDto.toJson()}');
+      if (responseDto.code.toString() == '200') {
+        // debugPrint('AQUÍ: ' + responseDto.response['response']);
+        return responseDto.response['response'];
+      } else {
+        debugPrint('vino por aquí');
+        throw Exception(responseDto.errorMessage);
+      }
+    } else {
+      throw Exception('Error al intentar realizar la consulta.');
+    }
+  }
+
+  static Future<List<TeacherQueryDto>> getSubjectQueries(
+      int teacherSubjectId) async {
+    List<TeacherQueryDto> result;
+    var uri =
+        Uri.parse('$backendUrlBase/api/v1/subjects/$teacherSubjectId/queries');
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    };
+    var response = await http.get(uri, headers: headers);
+    if (response.statusCode == 200) {
+      var responseDto = ResponseDto.fromJson(jsonDecode(response.body));
+      debugPrint(
+          'backend response (GET SUBJECT QUERIES): ${responseDto.toJson()}');
+      if (responseDto.code.toString() == '200') {
+        result = (responseDto.response as List)
+            .map((e) => TeacherQueryDto.fromJson(e))
+            .toList();
+        // debugPrint('result: $result'); // aquí imprime el resultado
+      } else {
+        throw Exception(responseDto.errorMessage);
+      }
+    } else {
+      throw Exception('Error al intentar obtener las consultas de la materia.');
     }
     return result;
   }

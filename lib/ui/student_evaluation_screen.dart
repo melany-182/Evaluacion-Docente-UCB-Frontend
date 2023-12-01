@@ -141,7 +141,31 @@ class StudentEvaluationScreen extends StatelessWidget {
             IconButton(
               icon: const Icon(Icons.arrow_back),
               onPressed: () {
-                Navigator.of(context).pop();
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text('Confirmación'),
+                      content: const Text(
+                          '¿Estás seguro de que deseas salir? Perderás los datos ingresados.'),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text('Cancelar'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text('Salir'),
+                        ),
+                      ],
+                    );
+                  },
+                );
               },
             ),
             IconButton(
