@@ -1,6 +1,7 @@
 import 'package:evaluacion_docente_frontend/bloc/student_state.dart';
 import 'package:evaluacion_docente_frontend/bloc/teacher_cubit.dart';
 import 'package:evaluacion_docente_frontend/bloc/teacher_state.dart';
+import 'package:evaluacion_docente_frontend/ui/teacher_evaluation_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -89,7 +90,23 @@ class TeacherHomeScreen extends StatelessWidget {
                                   children: [
                                     TextButton(
                                       onPressed: () {
-                                        // TODO: acciones para mostrar detalles
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  TeacherEvaluationDetailScreen(
+                                                      evaluationPercentage: state
+                                                          .data[index]
+                                                          .evaluationPercent,
+                                                      subjectName: state
+                                                          .data[index]
+                                                          .subjectName,
+                                                      parallel: state
+                                                          .data[index].parallel,
+                                                      teacherSubjectId: state
+                                                          .data[index]
+                                                          .teacherSubjectId),
+                                            ));
                                       },
                                       style: ButtonStyle(
                                         side: MaterialStateProperty.all(
@@ -110,7 +127,7 @@ class TeacherHomeScreen extends StatelessWidget {
                                       ),
                                       child: const Text('Detalles'),
                                     ),
-                                    TextButton(
+                                    /*TextButton(
                                       onPressed: () {
                                         // TODO: acciones para exportar informe
                                       },
@@ -132,7 +149,7 @@ class TeacherHomeScreen extends StatelessWidget {
                                                 Colors.white),
                                       ),
                                       child: const Text('Exportar informe'),
-                                    ),
+                                    ),*/
                                   ],
                                 ),
                                 const SizedBox(height: 8.0),

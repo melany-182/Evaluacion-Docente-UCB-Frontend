@@ -5,6 +5,7 @@ import 'package:evaluacion_docente_frontend/bloc/student_cubit.dart';
 import 'package:evaluacion_docente_frontend/bloc/student_state.dart';
 
 class StudentHomeScreen extends StatelessWidget {
+  // FIXME: el docente que ya se evaluó, no debería aparecer en la lista de docentes sin evaluar
   const StudentHomeScreen({super.key});
 
   @override
@@ -166,12 +167,15 @@ class StudentHomeScreen extends StatelessWidget {
                               fontSize: 18.0, fontWeight: FontWeight.bold),
                         ),
                       ),
+                      const SizedBox(height: 8.0),
                       if (evaluatedTeachers.isNotEmpty) ...[
                         for (var teacher in evaluatedTeachers) ...[
                           ListTile(
                             title: Text(
-                                '${teacher.teacherFirstName} ${teacher.teacherLastName}'),
-                            subtitle: Text(teacher.subjectName),
+                                '${teacher.teacherFirstName} ${teacher.teacherLastName}',
+                                textAlign: TextAlign.justify),
+                            subtitle: Text(teacher.subjectName,
+                                textAlign: TextAlign.justify),
                           ),
                         ],
                       ] else ...[
@@ -202,7 +206,31 @@ class StudentHomeScreen extends StatelessWidget {
             IconButton(
               icon: const Icon(Icons.logout),
               onPressed: () {
-                // TODO: acciones para 'Cerrar sesión'
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text('Cerrar sesión'),
+                      content: const Text(
+                          '¿Estás seguro de que deseas cerrar sesión?'),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text('Cancelar'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            // TODO: acciones para 'Cerrar sesión'
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text('Cerrar sesión'),
+                        ),
+                      ],
+                    );
+                  },
+                );
               },
             ),
           ],
