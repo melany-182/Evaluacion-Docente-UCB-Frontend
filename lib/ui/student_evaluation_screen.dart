@@ -43,6 +43,10 @@ class StudentEvaluationScreen extends StatelessWidget {
           if (state.status == PageStatus.loading) {
             return const Center(child: CircularProgressIndicator());
           } else if (state.data.isNotEmpty) {
+            List<TextEditingController> controllers = List.generate(
+                state.data.length,
+                (index) =>
+                    TextEditingController()); // TODO: usar para obtener las respuestas
             return Column(
               children: [
                 Expanded(
@@ -52,25 +56,63 @@ class StudentEvaluationScreen extends StatelessWidget {
                       const Padding(
                         padding: EdgeInsets.all(16.0),
                         child: Text(
-                            'Evaluación de docentes', // TODO: cambiar a nombre del docente
-                            style: TextStyle(
-                                fontSize: 20.0, fontWeight: FontWeight.bold)),
+                          'Evaluación a docente: ...', // TODO: cambiar a nombre del docente
+                          style: TextStyle(
+                              fontSize: 22.0, fontWeight: FontWeight.bold),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
-                      const SizedBox(height: 12.0),
-                      const Padding(
-                        padding: EdgeInsets.all(16.0),
-                        child: Text('Preguntas',
-                            style: TextStyle(
-                                fontSize: 20.0, fontWeight: FontWeight.bold)),
-                      ),
-                      const SizedBox(height: 12.0),
                       ListView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         itemCount: state.data.length,
                         itemBuilder: (context, index) {
-                          return ListTile(
-                            title: Text(state.data[index].questionText),
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 4.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ListTile(
+                                  title: RichText(
+                                    textAlign: TextAlign.justify,
+                                    text: TextSpan(
+                                      style: DefaultTextStyle.of(context).style,
+                                      children: <TextSpan>[
+                                        TextSpan(
+                                          text: '${index + 1}. ',
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16.0),
+                                        ),
+                                        TextSpan(
+                                          text: state.data[index].questionText,
+                                          style:
+                                              const TextStyle(fontSize: 16.0),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 4.0),
+                                AnimatedContainer(
+                                  duration: const Duration(milliseconds: 200),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16.0),
+                                  child: TextField(
+                                    controller: controllers[index],
+                                    maxLength: 200,
+                                    maxLines: null,
+                                    decoration: const InputDecoration(
+                                      hintText: 'Escribe tu respuesta aquí',
+                                      border: OutlineInputBorder(),
+                                      labelText: 'Respuesta',
+                                      counterStyle:
+                                          TextStyle(color: Colors.red),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           );
                         },
                       ),
@@ -85,6 +127,25 @@ class StudentEvaluationScreen extends StatelessWidget {
             );
           }
         },
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            IconButton(
+              icon: const Icon(Icons.send),
+              onPressed: () {
+                // TODO: acciones para 'Enviar evaluación'
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

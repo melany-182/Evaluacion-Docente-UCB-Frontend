@@ -160,7 +160,7 @@ class TeacherHomeScreen extends StatelessWidget {
             IconButton(
               icon: const Icon(Icons.menu_book),
               onPressed: () {
-                // TODO: acciones para 'Tus materias'
+                // misma pantalla
               },
             ),
             IconButton(
@@ -172,7 +172,31 @@ class TeacherHomeScreen extends StatelessWidget {
             IconButton(
               icon: const Icon(Icons.logout),
               onPressed: () {
-                // TODO: acciones para 'Cerrar sesión'
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text('Cerrar sesión'),
+                      content: const Text(
+                          '¿Estás seguro de que deseas cerrar sesión?'),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text('Cancelar'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            // TODO: acciones para 'Cerrar sesión'
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text('Cerrar sesión'),
+                        ),
+                      ],
+                    );
+                  },
+                );
               },
             ),
           ],

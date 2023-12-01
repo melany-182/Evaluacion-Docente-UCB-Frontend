@@ -38,7 +38,7 @@ class StudentService {
 
   static Future<List<QuestionDto>> fetchQuestions() async {
     List<QuestionDto> result;
-    var uri = Uri.parse('$backendUrlBase/api/v1/evaluations/questions/');
+    var uri = Uri.parse('$backendUrlBase/api/v1/evaluations/questions');
     Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',

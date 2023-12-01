@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blueGrey,
         ),
         initialRoute:
-            '/teacher-home', // TODO: cambiar a '/login' al integrar la autenticación
+            '/student-home', // TODO: cambiar a '/login' al integrar la autenticación
         routes: {
           '/login': (context) => const LoginScreen(),
           '/student-home': (context) => const StudentHomeScreen(),
