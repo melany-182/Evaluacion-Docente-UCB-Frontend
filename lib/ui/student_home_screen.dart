@@ -13,6 +13,7 @@ class StudentHomeScreen extends StatelessWidget {
         .getSubjects(); // obtención de las materias mediante el cubit
 
     return Scaffold(
+      backgroundColor: Colors.blueGrey[100],
       appBar: AppBar(
         title: const Text('Evaluación Docente UCB'),
       ),
@@ -181,25 +182,6 @@ class StudentHomeScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
-                          onPressed: () {
-                            // TODO: implementar logout
-                          },
-                          icon: const Icon(Icons.logout),
-                          tooltip: 'Cerrar sesión',
-                        ),
-                        const Text('Cerrar sesión'),
-                      ],
-                    ),
-                  ),
-                ),
               ],
             );
           } else {
@@ -208,6 +190,19 @@ class StudentHomeScreen extends StatelessWidget {
             );
           }
         },
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            IconButton(
+              icon: const Icon(Icons.logout),
+              onPressed: () {
+                // TODO: acciones para 'Cerrar sesión'
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -4,6 +4,7 @@ import 'package:evaluacion_docente_frontend/bloc/student_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+// TODO: completar la implementación de esta pantalla
 class StudentEvaluationScreen extends StatelessWidget {
   const StudentEvaluationScreen({super.key});
 
@@ -51,7 +52,7 @@ class StudentEvaluationScreen extends StatelessWidget {
                       const Padding(
                         padding: EdgeInsets.all(16.0),
                         child: Text(
-                            'Evaluación de docentes', // TODO: Cambiar a nombre del docente
+                            'Evaluación de docentes', // TODO: cambiar a nombre del docente
                             style: TextStyle(
                                 fontSize: 20.0, fontWeight: FontWeight.bold)),
                       ),
@@ -80,7 +81,7 @@ class StudentEvaluationScreen extends StatelessWidget {
             );
           } else {
             return const Center(
-              child: Text('No hay preguntas'),
+              child: Text('No existen preguntas registradas.'),
             );
           }
         },
