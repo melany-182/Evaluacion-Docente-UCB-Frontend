@@ -119,7 +119,11 @@ class StudentHomeScreen extends StatelessWidget {
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) =>
-                                                        const StudentEvaluationScreen()));
+                                                        StudentEvaluationScreen(
+                                                            subjectEvaluationId:
+                                                                state
+                                                                    .data[index]
+                                                                    .subjectEvaluationId)));
                                           },
                                           child: Text(
                                             '${state.data[index].teacherFirstName} ${state.data[index].teacherLastName}',

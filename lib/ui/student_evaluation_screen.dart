@@ -1,12 +1,15 @@
 import 'package:evaluacion_docente_frontend/bloc/question_cubit.dart';
 import 'package:evaluacion_docente_frontend/bloc/question_state.dart';
+import 'package:evaluacion_docente_frontend/bloc/student_cubit.dart';
 import 'package:evaluacion_docente_frontend/bloc/student_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-// TODO: completar la implementación de esta pantalla
 class StudentEvaluationScreen extends StatelessWidget {
-  const StudentEvaluationScreen({super.key});
+  final int subjectEvaluationId;
+  final Map<int, String> answers = {}; // <questionId, answerText>
+
+  StudentEvaluationScreen({super.key, required this.subjectEvaluationId});
 
   @override
   Widget build(BuildContext context) {
@@ -43,10 +46,10 @@ class StudentEvaluationScreen extends StatelessWidget {
           if (state.status == PageStatus.loading) {
             return const Center(child: CircularProgressIndicator());
           } else if (state.data.isNotEmpty) {
-            List<TextEditingController> controllers = List.generate(
-                state.data.length,
-                (index) =>
-                    TextEditingController()); // TODO: usar para obtener las respuestas
+            for (var question in state.data) {
+              answers[question.questionId] = '';
+            }
+
             return Column(
               children: [
                 Expanded(
@@ -67,6 +70,7 @@ class StudentEvaluationScreen extends StatelessWidget {
                         physics: const NeverScrollableScrollPhysics(),
                         itemCount: state.data.length,
                         itemBuilder: (context, index) {
+                          final question = state.data[index];
                           return Padding(
                             padding: const EdgeInsets.only(bottom: 4.0),
                             child: Column(
@@ -99,7 +103,9 @@ class StudentEvaluationScreen extends StatelessWidget {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 16.0),
                                   child: TextField(
-                                    controller: controllers[index],
+                                    onChanged: (text) {
+                                      answers[question.questionId] = text;
+                                    },
                                     maxLength: 200,
                                     maxLines: null,
                                     decoration: const InputDecoration(
@@ -141,7 +147,24 @@ class StudentEvaluationScreen extends StatelessWidget {
             IconButton(
               icon: const Icon(Icons.send),
               onPressed: () {
-                // TODO: acciones para 'Enviar evaluación'
+                bool allAnswersFilled =
+                    answers.values.every((answer) => answer.trim().isNotEmpty);
+
+                if (allAnswersFilled) {
+                  debugPrint('answers: $answers');
+                  BlocProvider.of<StudentCubit>(context)
+                      .evaluateTeacher(subjectEvaluationId, answers);
+
+                  Navigator.of(context).pop();
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text(
+                          'Por favor, responde a todas las preguntas antes de enviar la evaluación.'),
+                      duration: Duration(seconds: 5),
+                    ),
+                  );
+                }
               },
             ),
           ],

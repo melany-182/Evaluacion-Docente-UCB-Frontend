@@ -60,4 +60,45 @@ class StudentService {
     }
     return result;
   }
+
+  static Future<void> evaluateTeacher(
+      int subjectEvaluationId, Map<int, String> answers) async {
+    var uri = Uri.parse('$backendUrlBase/api/v1/teachers');
+
+    // Construir la lista de respuestas para enviar
+    List<Map<String, dynamic>> answersList = answers.entries.map((entry) {
+      return {
+        'subjectEvaluation': {'subjectEvaluationId': subjectEvaluationId},
+        'question': {'questionId': entry.key},
+        'student': {
+          'userId': 1
+        }, // FIXME: quitar este id predeterminado al integrar la autenticación
+        'answerText': entry.value,
+        'status': 1
+      };
+    }).toList();
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    };
+
+    var body = jsonEncode(answersList);
+
+    var response = await http.post(uri, headers: headers, body: body);
+
+    if (response.statusCode == 200) {
+      var responseDto = ResponseDto.fromJson(jsonDecode(response.body));
+      debugPrint(
+          'backend response (EVALUATE TEACHER): ${responseDto.toJson()}');
+      if (responseDto.code.toString() == '200') {
+        debugPrint('evaluación exitosa');
+      } else {
+        debugPrint('vino por aquí');
+        throw Exception(responseDto.errorMessage);
+      }
+    } else {
+      throw Exception('Error al intentar evaluar al docente.');
+    }
+  }
 }

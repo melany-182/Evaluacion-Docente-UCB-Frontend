@@ -17,4 +17,22 @@ class StudentCubit extends Cubit<StudentState> {
       ));
     }
   }
+
+  Future<void> evaluateTeacher(
+      int subjectEvaluationId, Map<int, String> answers) async {
+    emit(state.copyWith(status: PageStatus.loading));
+    try {
+      await StudentService.evaluateTeacher(subjectEvaluationId, answers);
+      emit(state.copyWith(
+        status: PageStatus.success,
+        data: await StudentService
+            .getSubjects(), // actualización de lista de materias // esto es importante
+      ));
+    } catch (e) {
+      emit(state.copyWith(
+        status: PageStatus.failure,
+        errorMessage: e.toString(),
+      ));
+    }
+  }
 }

@@ -40,7 +40,8 @@ class MyApp extends StatelessWidget {
         routes: {
           '/login': (context) => const LoginScreen(),
           '/student-home': (context) => const StudentHomeScreen(),
-          '/student-evaluation': (context) => const StudentEvaluationScreen(),
+          '/student-evaluation': (context) =>
+              StudentEvaluationScreen(subjectEvaluationId: 0),
           '/teacher-home': (context) => const TeacherHomeScreen(),
         },
         debugShowCheckedModeBanner: false,
